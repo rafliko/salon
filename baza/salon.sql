@@ -15,6 +15,7 @@ CREATE TABLE Samochod (
   Cena DECIMAL NULL,
   Przebieg INTEGER UNSIGNED NULL,
   Nowy VARCHAR(1) NULL,
+  Zdjecie VARCHAR(50) NULL,
   PRIMARY KEY(idSamochod)
 );
 
@@ -46,9 +47,23 @@ CREATE TABLE Pracownik (
       ON UPDATE NO ACTION
 );
 
+CREATE TABLE Koszyk (
+  idKoszyk INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  idSamochod INTEGER UNSIGNED NOT NULL,
+  Data_dodania DATE NULL,
+  Ilosc INTEGER UNSIGNED NULL,
+  PRIMARY KEY(idKoszyk),
+  INDEX Koszyk_FKIndex1(idSamochod),
+  FOREIGN KEY(idSamochod)
+    REFERENCES Samochod(idSamochod)
+      ON DELETE NO ACTION
+      ON UPDATE NO ACTION
+);
+
 CREATE TABLE Klient (
   idKlient INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
   idKonto INTEGER UNSIGNED NOT NULL,
+  idKoszyk INTEGER UNSIGNED NOT NULL,
   Imie VARCHAR(30) NULL,
   Nazwisko VARCHAR(30) NULL,
   Ulica VARCHAR(45) NULL,
@@ -58,27 +73,13 @@ CREATE TABLE Klient (
   Telefon INTEGER UNSIGNED NULL,
   PRIMARY KEY(idKlient),
   INDEX Klient_FKIndex1(idKonto),
+  INDEX Klient_FKIndex2(idKoszyk),
   FOREIGN KEY(idKonto)
     REFERENCES Konto(idKonto)
       ON DELETE NO ACTION
-      ON UPDATE NO ACTION
-);
-
-CREATE TABLE Koszyk (
-  idKoszyk INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-  idKlient INTEGER UNSIGNED NOT NULL,
-  idSamochod INTEGER UNSIGNED NOT NULL,
-  Data_dodania DATE NULL,
-  Ilosc INTEGER UNSIGNED NULL,
-  PRIMARY KEY(idKoszyk),
-  INDEX Koszyk_FKIndex1(idSamochod),
-  INDEX Koszyk_FKIndex2(idKlient),
-  FOREIGN KEY(idSamochod)
-    REFERENCES Samochod(idSamochod)
-      ON DELETE NO ACTION
       ON UPDATE NO ACTION,
-  FOREIGN KEY(idKlient)
-    REFERENCES Klient(idKlient)
+  FOREIGN KEY(idKoszyk)
+    REFERENCES Koszyk(idKoszyk)
       ON DELETE NO ACTION
       ON UPDATE NO ACTION
 );
