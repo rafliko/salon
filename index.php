@@ -35,13 +35,17 @@
 
         if (mysqli_num_rows($ret) > 0) {
             while($row = mysqli_fetch_assoc($ret)) {
+                $id = $row["idSamochod"];
                 $item = "";
                 $item .= "<div>";
                 $item .= "<img id='zdj' src='img/".$row["Zdjecie"]."'><br>";
                 $item .= $row["Marka"]." ";
                 $item .= $row["Model"]."<br>";
-                $item .= $row["Cena"]."zł<br>";
-                $item .= "<button>Do koszyka</button>";
+                $item .= "Cena: ".$row["Cena"]."zł<br>";
+                $item .= "Używany: ";
+                if($row["Nowy"] == 't') $item .= "nie";
+                else $item .= "tak";
+                $item .= "<br><a href='dodaj.php?idSam=$id'><button>Do koszyka</button></a>";
                 $item .= "</div><br>";
                 echo $item;
             }

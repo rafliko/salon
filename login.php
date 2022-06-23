@@ -12,13 +12,13 @@
         $login = mysqli_real_escape_string($con, $_POST['log']);
         $pwd = mysqli_real_escape_string($con, $_POST['pwd']);
         $pwd = sha1($pwd);
-        $sql = "SELECT * FROM konto WHERE Login='$login' AND Haslo='$pwd'";
+        $sql = "SELECT * FROM konto JOIN klient ON konto.idKonto = klient.idKonto HAVING Login='$login' AND Haslo='$pwd'";
         $ret = mysqli_query($con, $sql);
         if(mysqli_num_rows($ret)==1)
         {
             $row = mysqli_fetch_assoc($ret);
             $_SESSION["log"] = $row['Login'];
-            $_SESSION["id"] = $row['idKonto'];
+            $_SESSION["id"] = $row['idKlient'];
             header("Location:index.php");
             exit();
         }
